@@ -40,6 +40,7 @@ OVERVIEW: Tools for randomly pairing items together.
 USAGE: random-pairs <subcommand>
 
 OPTIONS:
+  --version               Show the version.
   -h, --help              Show help information.
 
 SUBCOMMANDS:
