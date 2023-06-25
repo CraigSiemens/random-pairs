@@ -14,6 +14,12 @@ extension RandomPairs {
             """
         )
         
+        @Flag(
+            name: .customLong("yes"),
+            help: "Sets the participation of all pairs to yes."
+        )
+        var alwaysYes: Bool = false
+        
         @OptionGroup
         var globalOptions: GlobalOptions
         
@@ -22,12 +28,28 @@ extension RandomPairs {
             
             guard var last = storage.history.last else { return }
             
+            if alwaysYes {
+                setParticipationToYes(generatedPairs: &last)
+            } else {
+                askForParticipation(generatedPairs: &last)
+            }
+            
+            storage.append(last)
+            try storage.save()
+        }
+        
+        func setParticipationToYes(generatedPairs: inout GeneratedPairs) {
+            for index in generatedPairs.pairs.indices {
+                generatedPairs.pairs[index].participation = .yes
+            }
+        }
+        
+        func askForParticipation(generatedPairs: inout GeneratedPairs) {
             print("Did the following pairs participate?")
             
-            for index in last.pairs.indices {
-                
-                var pair = last.pairs[index]
-                defer { last.pairs[index] = pair }
+            for index in generatedPairs.pairs.indices {
+                var pair = generatedPairs.pairs[index]
+                defer { generatedPairs.pairs[index] = pair }
                 
                 guard let item2 = globalOptions.config.item2Name(for: pair.item2)
                 else { continue }
@@ -62,9 +84,7 @@ extension RandomPairs {
                     }
                 } while pair.participation == .unknown
             }
-            
-            storage.append(last)
-            try storage.save()
+
         }
     }
 }

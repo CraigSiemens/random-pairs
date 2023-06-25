@@ -5,6 +5,7 @@ struct PairsGenerator {
     
     let history: [GeneratedPairs]
     let items: [Item]
+    let randomizationWeighting: Config.RandomizationWeighting
         
     func next() -> GeneratedPairs {
         var remainingItems: [Item: WeightedSet<Item>] = [:]
@@ -48,8 +49,8 @@ struct PairsGenerator {
         
         var generatedPairs = GeneratedPairs()
         
-        // Pick an item with lowest entropy to make a pair for
-        while let item1 = remainingItems.min(by: \.value.totalWeight)?.key {
+        // Pick an item with highest totalWeight to make a pair for
+        while let item1 = remainingItems.max(by: \.value.totalWeight)?.key {
             // Pick another item at random
             let item2 = remainingItems[item1]?.randomValue()
             
@@ -75,12 +76,19 @@ struct PairsGenerator {
     }
     
     private func weight(for offset: Int) -> UInt {
-        UInt(offset * offset)
+        switch randomizationWeighting {
+        case .exponential:
+            return UInt(offset * offset)
+        case .linear:
+            return UInt(offset)
+        case .uniform:
+            return 1
+        }
     }
 }
 
 private extension Collection {
-    func min(by keyPath: KeyPath<Element, some Comparable>) -> Element? {
-        self.min { $0[keyPath: keyPath] < $1[keyPath: keyPath] }
+    func max(by keyPath: KeyPath<Element, some Comparable>) -> Element? {
+        self.max { $0[keyPath: keyPath] < $1[keyPath: keyPath] }
     }
 }

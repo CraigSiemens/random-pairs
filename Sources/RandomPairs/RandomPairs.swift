@@ -5,6 +5,7 @@ import Foundation
 struct RandomPairs: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "Tools for randomly pairing items together.",
+        version: version,
         subcommands: [
             Generate.self,
             History.self,

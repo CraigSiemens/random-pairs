@@ -35,7 +35,8 @@ extension RandomPairs {
             
             let generator = PairsGenerator(
                 history: storage.history,
-                items: items
+                items: items,
+                randomizationWeighting: globalOptions.config.randomizationWeighting
             )
             
             let generatedPairs = generator.next()

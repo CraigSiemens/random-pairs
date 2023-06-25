@@ -5,7 +5,7 @@ struct Config: Codable, Hashable {
     var items: [String] = []
     
     var randomizationWeighting: RandomizationWeighting = .exponential
-    var oddItemAppearance: OddItemAppearance = .hidden
+    var oddItemAppearance: OddItemAppearance = .shown(name: "Any")
     
     init(url: URL = Self.defaultURL) throws {
         if FileManager.default.fileExists(atPath: url.path) {
@@ -13,6 +13,11 @@ struct Config: Codable, Hashable {
             let decoder = JSONDecoder()
             self = try decoder.decode(Self.self, from: data)
         } else {
+            try FileManager.default.createDirectory(
+                at: url.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
             let data = try encoder.encode(self)
