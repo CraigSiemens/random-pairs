@@ -6,7 +6,7 @@ MAKEFLAGS += --no-builtin-rules
 
 all: random-pairs
 
-NAME = $(shell swift package describe --type json | jq -r '.name')
+NAME = random-pairs
 SWIFT_BUILD_FLAGS = --disable-sandbox --configuration release
 SOURCES = $(shell find Sources -type f -name "*.swift" | sed 's: :\\ :g')
 BINARY = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)/$(NAME)
