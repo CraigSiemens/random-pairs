@@ -22,7 +22,9 @@ This will create a binary in `.build/release/random-pairs`. It will also create 
 
 ## Configuration
 
-This command reads from a `config.json`. See (Config.swift)[Sources/RandomPairs/Models/Config.swift] for all the possible options.
+This command reads from a `config.json` file. See [Config.swift](Sources/RandomPairs/Models/Config.swift) for all the possible options. 
+
+By default it reads the file from `~/Library/Application Support/RandomPairs/config.json` but a custom path can be passed instead. On the first run of `random-pairs`, the file will be created if it doesn't already exist.
 
 - `items` - An array of items to randomly create pairs from.
 - `randomizationWeighting` - For controlling the weights to apply when generating pairs based on the number of iterations since they last paired.
