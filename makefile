@@ -21,7 +21,7 @@ completions: random-pairs
 
 	# Workaround for https://github.com/apple/swift-argument-parser/issues/564
 	"$(BINARY)" --generate-completion-script zsh > "$(COMPLETIONS_DIR)/zsh"
-	sed -i '' 's/--excluding:excluding:/--excluding:*:excluding:/g' "$(COMPLETIONS_DIR)/zsh"
+	sed -i '' -E 's/--excluding(\[.*\]):(.*):/--excluding\1:*:\2:/g' "$(COMPLETIONS_DIR)/zsh"
 
 	"$(BINARY)" --generate-completion-script bash > "$(COMPLETIONS_DIR)/bash"
 	"$(BINARY)" --generate-completion-script fish > "$(COMPLETIONS_DIR)/fish"
@@ -29,7 +29,7 @@ completions: random-pairs
 readme: random-pairs
 	perl -i -0pe "s/## Details\n\`\`\`(.|\n)*?\`\`\`/## Details\n\`\`\`\n$$("$(BINARY)" help)\n\`\`\`/g" README.md
 
-clean: 
+clean:
 	rm -rf .build
 	rm -f random-pairs
 
