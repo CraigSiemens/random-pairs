@@ -11,12 +11,13 @@ struct PairsGenerator {
         var remainingItems: [Item: WeightedSet<Item>] = [:]
         
         // Add default weights for every combination of items
+        let defaultWeight = weight(for: history.count * 2)
+        
         for item1 in items {
             for item2 in items
             where item1 != item2 {
-                let weight = weight(for: items.count)
-                remainingItems[item1, default: .init()].insert(item2, weight: weight)
-                remainingItems[item2, default: .init()].insert(item1, weight: weight)
+                remainingItems[item1, default: .init()].insert(item2, weight: defaultWeight)
+                remainingItems[item2, default: .init()].insert(item1, weight: defaultWeight)
             }
         }
         
